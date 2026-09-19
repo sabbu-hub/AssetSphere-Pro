@@ -1,0 +1,3 @@
+AssetSphere Pro v2.1 RBAC
+Port: 5001
+Database: assetsphere_v21.db
