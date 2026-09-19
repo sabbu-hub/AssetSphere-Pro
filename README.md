@@ -58,6 +58,7 @@ Developed a role-based full-stack web application using Flask and SQLite to mana
 ## GitHub topics
 `flask` `python` `sqlite` `it-asset-management` `full-stack` `inventory-management` `role-based-access-control` `portfolio-project`
 
+
 ## RBAC v2.1 permissions
 
 - **Admin**: create, edit, assign/reassign, delete assets; add maintenance; export CSV; view audit log.
@@ -66,6 +67,7 @@ Developed a role-based full-stack web application using Flask and SQLite to mana
 
 ### Clean-build verification
 This v2.1 package uses `assetsphere_v21.db` and port `5001`, so it does not reuse the previous `assetsphere.db` or the old port-5000 development server. After first launch, the dashboard should begin with the seeded 8 assets. The top bar shows **v2.1 RBAC**.
+
 
 ## GitHub-ready notes
 - The SQLite database is generated automatically on first run and is excluded from Git via `.gitignore`.
