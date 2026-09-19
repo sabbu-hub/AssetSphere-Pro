@@ -1,0 +1,18 @@
+{% extends 'base.html' %}{% block title %}Dashboard · AssetSphere Pro{% endblock %}{% block content %}
+<div class="page-head"><div><div class="eyebrow">OPERATIONS OVERVIEW</div><h1>Good to see you, {{ session.user.name.split()[0] }}.</h1><p>Real-time visibility into your IT asset lifecycle.</p></div>{% if session.user.role=='admin' %}<a class="btn primary" href="{{ url_for('asset_new') }}">＋ Add Asset</a>{% endif %}</div>
+<div class="stat-grid">
+  <div class="stat-card"><span class="iconbox">▦</span><div><small>Total Assets</small><b>{{ stats.total or 0 }}</b><em>Registered inventory</em></div></div>
+  <div class="stat-card"><span class="iconbox">✓</span><div><small>Assigned</small><b>{{ stats.assigned or 0 }}</b><em>In active use</em></div></div>
+  <div class="stat-card"><span class="iconbox">◇</span><div><small>Available</small><b>{{ stats.available or 0 }}</b><em>Ready to deploy</em></div></div>
+  <div class="stat-card"><span class="iconbox warn">⚙</span><div><small>Maintenance</small><b>{{ stats.maintenance or 0 }}</b><em>Needs attention</em></div></div>
+  <div class="stat-card value"><span class="iconbox">₹</span><div><small>Portfolio Value</small><b>₹{{ '{:,.0f}'.format(stats.total_value or 0) }}</b><em>Purchase cost basis</em></div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-head"><div><h3>Asset distribution</h3><p>Inventory by category</p></div><a href="{{ url_for('assets') }}">View all</a></div><div class="bars">{% for c in categories %}<div class="bar-row"><div class="bar-label"><span>{{ c.category }}</span><b>{{ c.count }}</b></div><div class="bar-track"><span style="width:{{ (c.count/max_cat*100)|round }}%"></span></div></div>{% endfor %}</div></div>
+  <div class="card"><div class="card-head"><div><h3>Service watch</h3><p>Open maintenance work</p></div></div>{% if maintenance_due %}{% for m in maintenance_due %}<a class="service-item" href="{{ url_for('asset_detail', asset_id=m.id) }}"><div><b>{{ m.asset_tag }}</b><span>{{ m.name }}</span></div><div class="right"><span class="badge maintenance">{{ m.mstatus }}</span><small>{{ m.service_type }}</small></div></a>{% endfor %}{% else %}<div class="empty-mini">No open maintenance. Your infrastructure looks healthy.</div>{% endif %}</div>
+</div>
+<div class="two-col bottom">
+  <div class="card"><div class="card-head"><div><h3>Recently added</h3><p>Latest inventory records</p></div></div><div class="mini-table">{% for a in recent_assets %}<a href="{{ url_for('asset_detail',asset_id=a.id) }}"><div class="asset-dot">{{ a.name[0] }}</div><div><b>{{ a.name }}</b><span>{{ a.asset_tag }} · {{ a.category }}</span></div><span class="badge {{ a.status|lower|replace(' ','-') }}">{{ a.status }}</span></a>{% endfor %}</div></div>
+  <div class="card"><div class="card-head"><div><h3>Recent activity</h3><p>Audit-ready change history</p></div><a href="{{ url_for('activity') }}">Full log</a></div><div class="timeline">{% for x in recent_activity %}<div class="timeline-item"><span class="timeline-dot"></span><div><b>{{ x.action }}</b><p>{{ x.details }}</p><small>{{ x.user_name }} · {{ x.created_at }}</small></div></div>{% endfor %}</div></div>
+</div>
+{% endblock %}
