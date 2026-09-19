@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block title %}Activity Log · AssetSphere Pro{% endblock %}{% block content %}
+<div class="page-head"><div><div class="eyebrow">AUDIT TRAIL</div><h1>Activity Log</h1><p>Traceable user actions for governance and operational visibility.</p></div></div><div class="card"><div class="timeline full">{% for x in activity %}<div class="timeline-item"><span class="timeline-dot"></span><div><div class="activity-top"><b>{{ x.action }}</b><span>{{ x.created_at }}</span></div><p>{{ x.details }}</p><small>Performed by {{ x.user_name }}</small></div></div>{% else %}<div class="empty-mini">No activity recorded yet.</div>{% endfor %}</div></div>
+{% endblock %}
