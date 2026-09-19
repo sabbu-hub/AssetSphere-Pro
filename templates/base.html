@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}AssetSphere Pro{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">AS</div><div><strong>AssetSphere</strong><span>PRO</span></div></div>
+    <nav>
+      <a class="nav-link {% if request.endpoint=='dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><span>◫</span> Dashboard</a>
+      <a class="nav-link {% if request.endpoint in ['assets','asset_detail','asset_new','asset_edit'] %}active{% endif %}" href="{{ url_for('assets') }}"><span>▦</span> Asset Registry</a>
+      <a class="nav-link {% if request.endpoint=='activity' %}active{% endif %}" href="{{ url_for('activity') }}"><span>↻</span> Activity Log</a>
+    </nav>
+    <div class="sidebar-foot"><div class="mini-avatar">{{ session.user.name[0] }}</div><div class="user-meta"><b>{{ session.user.name }}</b><span>{{ session.user.role|title }}</span></div><a class="logout" href="{{ url_for('logout') }}" title="Sign out">↗</a></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button><div class="topbar-title">IT Asset & Infrastructure Management <span style="font-size:11px;font-weight:800;color:#6f5df5;margin-left:8px">{{ app_version }}</span></div><div class="secure-pill">● Secure Session</div></header>
+    <section class="content">
+      {% with messages=get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for c,m in messages %}<div class="flash {{ c }}">{{ m }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+</div>
+<script>
+  setTimeout(()=>document.querySelectorAll('.flash').forEach(x=>x.remove()),3500)
+</script>
+</body>
+</html>
